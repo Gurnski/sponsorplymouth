@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Admin</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Overpass:wght@400;600;800&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="admin">
+    <h1>Admin</h1>
+
+    <form id="login-form" class="admin-form">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+      <button class="button" type="submit">Sign in</button>
+    </form>
+
+    <div id="panel" hidden>
+      <p class="form-error" id="panel-error" role="alert" hidden></p>
+
+      <section aria-labelledby="pending-h">
+        <h2 id="pending-h">Dares to read</h2>
+        <div id="pending-dares"></div>
+      </section>
+
+      <section aria-labelledby="pledges-h">
+        <h2 id="pledges-h">Donations to check</h2>
+        <p class="admin-note">Open the JustGiving page and look for a donation with this code and amount. Only confirmed donations move a dare up.</p>
+        <div id="pledges"></div>
+      </section>
+
+      <section aria-labelledby="add-h">
+        <h2 id="add-h">Add a donation yourself</h2>
+        <p class="admin-note">For donations on a walker's JustGiving page that have a dare code in the message but were never logged here. These count straight away. Group dares run on free votes, so they can't take donations.</p>
+        <form id="add-pledge" class="admin-form">
+          <label for="add-code">Dare code</label>
+          <input id="add-code" name="code" required placeholder="DARE-K7QM" autocomplete="off">
+          <label for="add-amount">Amount in pounds</label>
+          <input id="add-amount" name="amount" inputmode="decimal" required autocomplete="off">
+          <label for="add-name">Donor name (optional)</label>
+          <input id="add-name" name="donor_name" maxlength="60" autocomplete="off">
+          <button class="button" type="submit">Add donation</button>
+        </form>
+      </section>
+
+      <section aria-labelledby="live-h">
+        <h2 id="live-h">Dares on the list</h2>
+        <div id="live-dares"></div>
+      </section>
+
+      <section aria-labelledby="walkers-h">
+        <h2 id="walkers-h">Walkers and donation links</h2>
+        <div id="targets"></div>
+        <form id="add-walker" class="admin-form">
+          <h3>Add a walker</h3>
+          <label for="walker-name">Name</label>
+          <input id="walker-name" name="name" maxlength="40" required autocomplete="off">
+          <label for="walker-url">JustGiving page link</label>
+          <input id="walker-url" name="jg_url" type="url" placeholder="https://www.justgiving.com/page/..." autocomplete="off">
+          <button class="button" type="submit">Add walker</button>
+        </form>
+      </section>
+
+      <section aria-labelledby="settings-h">
+        <h2 id="settings-h">Settings</h2>
+        <form id="settings" class="admin-form">
+          <label for="s-title">Challenge title</label>
+          <input id="s-title" name="challenge_title" maxlength="60" required>
+          <label for="s-group">Group name</label>
+          <input id="s-group" name="group_name" maxlength="60">
+          <label for="s-charity">Charity name</label>
+          <input id="s-charity" name="charity_name" maxlength="80">
+          <label for="s-date">Walk date, as you'd like it shown</label>
+          <input id="s-date" name="walk_date" maxlength="40" placeholder="Saturday 14 November">
+          <label for="s-closes">List closes at (leave blank to keep it open)</label>
+          <input id="s-closes" name="closes_at" type="datetime-local">
+          <label class="admin-check" for="s-group-on"><input id="s-group-on" name="group_enabled" type="checkbox"> Show free group dares on the site</label>
+          <label for="s-gw">Winning dares for the group</label>
+          <input id="s-gw" name="group_winners" type="number" min="1" max="10" required>
+          <label for="s-ww">Winning dares for each walker</label>
+          <input id="s-ww" name="walker_winners" type="number" min="1" max="10" required>
+          <button class="button" type="submit">Save settings</button>
+          <p class="done" id="settings-saved" role="status" hidden>Settings saved.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="/admin.js" type="module"></script>
+</body>
+</html>

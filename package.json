@@ -1,0 +1,17 @@
+{
+  "name": "donate-plymouth",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "node --test",
+    "e2e": "node scripts/e2e.mjs .dev.vars",
+    "db:local": "wrangler d1 migrations apply donate-plymouth --local",
+    "db:demo": "wrangler d1 execute donate-plymouth --local --file=db/demo.sql",
+    "db:remote": "wrangler d1 migrations apply donate-plymouth --remote",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

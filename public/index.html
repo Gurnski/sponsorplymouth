@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dare us on Dartmoor</title>
+  <meta name="description" content="Suggest a dare for our Dartmoor walk and donate to push it up the list. The top dares are the ones we do.">
+  <meta name="theme-color" content="#b5125f">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Overpass:wght@400;600;800&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="cover">
+    <div class="cover-inner">
+      <h1 id="title">Dare us on Dartmoor</h1>
+      <p class="cover-lede">Suggest something daft for us to do on our walk. Vote for group dares for free, or donate to push a dare up one walker's list. The dares at the top are the ones we do.</p>
+      <p class="cover-meta" id="cover-meta" hidden></p>
+      <div class="cover-now" id="cover-now" hidden>
+        <p class="cover-now-label">If the list closed now, we'd be doing</p>
+        <p class="cover-now-dare" id="cover-now-dare"></p>
+      </div>
+      <a class="button button-invert" href="#board">See the dares</a>
+    </div>
+  </header>
+
+  <main>
+    <div id="board" class="dares-head">
+      <div class="wrap">
+        <h2 id="board-heading">The dares</h2>
+        <p class="raised" id="raised" hidden></p>
+        <p class="closed-note" id="closed-note" hidden>The list has closed. These are the final standings.</p>
+      </div>
+    </div>
+
+    <section class="wrap dare-section" id="group-section" aria-labelledby="group-heading">
+      <h3 id="group-heading">Group dares</h3>
+      <p class="section-note">Free to vote. The top ones, we all do together.</p>
+      <p class="status" id="group-status" role="status">Loading the dares.</p>
+      <ol class="dares" id="group-dares"></ol>
+      <button class="button" id="group-suggest" type="button" hidden>Suggest a group dare</button>
+    </section>
+
+    <section class="walker-band" id="walker-section" aria-labelledby="walker-heading" hidden>
+      <div class="wrap dare-section">
+        <h3 id="walker-heading">Individual dares</h3>
+        <p class="section-note">Each walker has their own list and does whatever tops it. Your donation goes to that walker's JustGiving page.</p>
+        <div class="tabs" id="tabs" role="group" aria-label="Choose a walker"></div>
+        <p class="status" id="walker-status" role="status" hidden></p>
+        <ol class="dares" id="walker-dares"></ol>
+        <button class="button" id="walker-suggest" type="button"></button>
+      </div>
+    </section>
+
+    <section class="wrap how" aria-labelledby="how-heading">
+      <h2 id="how-heading">How it works</h2>
+      <ol class="steps">
+        <li><strong>Suggest a dare</strong> for the whole group or for one walker. We read every suggestion before it goes on the list.</li>
+        <li><strong>Vote for group dares</strong> for free, with one vote per dare.</li>
+        <li><strong>Donate to a walker's dare</strong> on JustGiving, put the dare's code in your donation message, then log it here.</li>
+        <li><strong>We match it up</strong> against JustGiving and the dare climbs that walker's list.</li>
+        <li><strong>The top dares happen</strong> on the walk.</li>
+      </ol>
+      <h3>The small print</h3>
+      <p>You donate on JustGiving, so your money goes to the charity whichever dare wins. This site never touches it.</p>
+      <p>We can turn down any dare that's unsafe, illegal or bad for the moor, even if it's winning. The next one down takes its place.</p>
+      <p>If two dares tie, the one suggested first ranks higher.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p id="foot-text">Donations are handled by JustGiving.</p>
+  </footer>
+
+  <dialog class="sheet" id="donate-dialog" aria-labelledby="donate-title">
+    <button class="sheet-close" type="button" data-close aria-label="Close">&times;</button>
+    <h2 id="donate-title">Back this dare</h2>
+    <p class="sheet-dare" id="donate-dare"></p>
+    <div id="donate-flow">
+      <ol class="donate-steps">
+        <li>
+          <p>Copy this code. It tells us which dare your money is for.</p>
+          <div class="code-row">
+            <code id="donate-code"></code>
+            <button class="button button-quiet" id="copy-code" type="button">Copy code</button>
+          </div>
+        </li>
+        <li>
+          <p>Donate on JustGiving and paste the code into your message.</p>
+          <a class="button" id="donate-link" target="_blank" rel="noopener">Open JustGiving</a>
+        </li>
+        <li>
+          <p>Come back and log it so we know to look for it.</p>
+          <form id="pledge-form" novalidate>
+            <label for="pledge-amount">Amount you gave, in pounds</label>
+            <input id="pledge-amount" name="amount" inputmode="decimal" autocomplete="off" required placeholder="10">
+            <label for="pledge-name">Name on your donation (optional)</label>
+            <input id="pledge-name" name="donor_name" maxlength="60" autocomplete="name">
+            <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <p class="form-error" id="pledge-error" role="alert" hidden></p>
+            <button class="button" type="submit">Log my donation</button>
+          </form>
+        </li>
+      </ol>
+    </div>
+    <div id="donate-done" hidden>
+      <p class="done">Donation logged, thank you. The dare moves up once we've matched it on JustGiving.</p>
+      <button class="button button-quiet" type="button" data-close>Back to the dares</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="suggest-dialog" aria-labelledby="suggest-title">
+    <button class="sheet-close" type="button" data-close aria-label="Close">&times;</button>
+    <h2 id="suggest-title">Suggest a dare</h2>
+    <form id="suggest-form" novalidate>
+      <label for="suggest-target">Who's it for?</label>
+      <select id="suggest-target" name="target_id" required></select>
+      <label for="suggest-title-input">The dare</label>
+      <input id="suggest-title-input" name="title" maxlength="80" required placeholder="Walk the last mile in a dress">
+      <label for="suggest-detail">Any details (optional)</label>
+      <textarea id="suggest-detail" name="detail" maxlength="240" rows="3"></textarea>
+      <label for="suggest-name">Your name (optional, shown on the list)</label>
+      <input id="suggest-name" name="suggested_by" maxlength="40" autocomplete="name">
+      <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="hint">We read every suggestion first. Keep it safe, legal and kind to the moor.</p>
+      <p class="form-error" id="suggest-error" role="alert" hidden></p>
+      <button class="button" type="submit">Send suggestion</button>
+    </form>
+    <div id="suggest-done" hidden>
+      <p class="done">Suggestion sent. It'll appear on the list once we've read it.</p>
+      <button class="button button-quiet" type="button" data-close>Back to the dares</button>
+    </div>
+  </dialog>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
