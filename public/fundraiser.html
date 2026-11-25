@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fundraiser | Sponsor University of Plymouth</title>
+  <meta name="description" content="A fundraiser by University of Plymouth students for Amnesty International.">
+  <meta name="theme-color" content="#b5125f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sponsor University of Plymouth">
+  <meta property="og:title" content="Fundraiser">
+  <meta property="og:description" content="A fundraiser by University of Plymouth students for Amnesty International.">
+  <meta property="og:url" content="https://sponsorplymouth.co.uk/fundraisers">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/overpass.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="modulepreload" href="/site.js">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the main part</a>
+  <header class="cover">
+    <div class="topbar">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="32" height="32"><span>Sponsor University of Plymouth</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list"><svg class="icon" aria-hidden="true"><use href="/icons.svg#menu"></use></svg>Menu</button>
+      <nav aria-label="Main">
+        <ul class="nav-list" id="nav-list">
+          <li><a href="/">Home</a></li>
+          <li class="nav-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-fundraisers">Fundraisers<svg class="icon" aria-hidden="true"><use href="/icons.svg#caret"></use></svg></button>
+            <ul class="nav-sub-list" id="nav-fundraisers">
+              <li><a href="/fundraisers">All fundraisers</a></li>
+            </ul>
+          </li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a class="nav-leader" href="/admin"><svg class="icon" aria-hidden="true"><use href="/icons.svg#lock"></use></svg>Challenge Leader</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="page-head">
+      <span class="badge" id="type-badge" hidden></span>
+      <h1 id="title"></h1>
+      <p class="page-lede" id="lede"></p>
+      <p class="page-facts" id="facts" hidden></p>
+    </div>
+  </header>
+
+  <p class="preview-note" id="preview-note" hidden>Draft preview. Only signed-in leaders can see this page.</p>
+  <main id="main">
+    <p class="wrap-wide band load-note" id="status" role="status">Loading the fundraiser.</p>
+    <div class="wrap-wide detail" id="detail" hidden>
+      <div id="photo-slot"></div>
+      <aside class="give" aria-labelledby="give-heading">
+        <h2 class="visually-hidden" id="give-heading">Raised so far</h2>
+        <div id="tally"></div>
+        <a class="button button-big" id="donate" target="_blank" rel="noopener">Donate on JustGiving</a>
+        <p class="give-note" id="give-note">You donate on JustGiving, so your money goes straight to the charity. This site never handles it.</p>
+      </aside>
+      <div class="prose" id="body"></div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>
+        <p class="foot-name">Sponsor University of Plymouth</p>
+        <p class="foot-about">University of Plymouth students raising money for Amnesty International. Donations are handled by JustGiving. This site never takes your money.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="foot-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/fundraisers">Fundraisers</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a href="/admin">Leader sign-in</a></li>
+        </ul>
+      </nav>
+      <p class="foot-charity"><span>In support of</span><img src="/amnesty-international.png" alt="Amnesty International" width="520" height="220" loading="lazy"></p>
+    </div>
+  </footer>
+
+  <script src="/fundraiser.js" type="module"></script>
+</body>
+</html>

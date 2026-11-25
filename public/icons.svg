@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="dare" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c.4-3.6 3-5.8 6.5-5.8s6.1 2.2 6.5 5.8"/><circle cx="17.2" cy="9" r="2.5"/><path d="M17.8 14.3c2.2.4 3.5 2.2 3.8 4.700"/></symbol>
+  <symbol id="event" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3v3H8z"/></symbol>
+  <symbol id="challenge" viewBox="0 0 24 24"><path d="M2.5 19.5 9 8l3.5 5.500 2.500-3.500 6.500 9.500z"/><path d="M9 8V3.500l3.500 1.300L9 6.200"/></symbol>
+  <symbol id="mountain" viewBox="0 0 24 24"><path d="M2.5 19.5 9 7l3.500 6 2.500-3.500 6.500 10z"/><path d="M7.200 10.500 9 12l1.800-1.500"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.500V7.500a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="caret" viewBox="0 0 24 24"><path d="m6 9.500 6 6 6-6"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="m12 3.500 2.600 5.300 5.900.900-4.300 4.100 1 5.800-5.200-2.700-5.200 2.700 1-5.800-4.300-4.100 5.900-.900z"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s6.500-5.600 6.500-10.500a6.500 6.500 0 0 0-13 0C5.500 15.400 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12.500 4.500 4.500L19 7.500"/></symbol>
+</svg>

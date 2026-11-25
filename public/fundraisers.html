@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fundraisers | Sponsor University of Plymouth</title>
+  <meta name="description" content="Every fundraiser run by University of Plymouth students for Amnesty International: dares, events and sponsored challenges.">
+  <meta name="theme-color" content="#b5125f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sponsor University of Plymouth">
+  <meta property="og:title" content="Fundraisers">
+  <meta property="og:description" content="Every fundraiser run by University of Plymouth students for Amnesty International: dares, events and sponsored challenges.">
+  <meta property="og:url" content="https://sponsorplymouth.co.uk/fundraisers">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/overpass.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="modulepreload" href="/site.js">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the main part</a>
+  <header class="cover">
+    <div class="topbar">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="32" height="32"><span>Sponsor University of Plymouth</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list"><svg class="icon" aria-hidden="true"><use href="/icons.svg#menu"></use></svg>Menu</button>
+      <nav aria-label="Main">
+        <ul class="nav-list" id="nav-list">
+          <li><a href="/">Home</a></li>
+          <li class="nav-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-fundraisers">Fundraisers<svg class="icon" aria-hidden="true"><use href="/icons.svg#caret"></use></svg></button>
+            <ul class="nav-sub-list" id="nav-fundraisers">
+              <li><a href="/fundraisers" aria-current="page">All fundraisers</a></li>
+            </ul>
+          </li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a class="nav-leader" href="/admin"><svg class="icon" aria-hidden="true"><use href="/icons.svg#lock"></use></svg>Challenge Leader</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="page-head">
+      <h1>Fundraisers</h1>
+      <p class="page-lede">Dares, events and sponsored challenges. Each one gets us closer to Everest Base Camp, and every donation goes through JustGiving to Amnesty International.</p>
+    </div>
+  </header>
+
+  <a class="everest-strip" href="/our-challenge">
+    <div class="everest-inner">
+      <p class="everest-name"><svg class="icon" aria-hidden="true"><use href="/icons.svg#mountain"></use></svg>Everest Base Camp 2027</p>
+      <div class="everest-figures" id="everest-figures" hidden></div>
+      <p class="everest-charity"><span>in support of</span><img src="/amnesty-international.png" alt="Amnesty International" width="520" height="220"></p>
+    </div>
+  </a>
+
+  <main id="main">
+    <section class="band wrap-wide" aria-labelledby="live-heading">
+      <div class="section-head"><h2 id="live-heading">Happening now</h2></div>
+      <p class="load-note" id="status" role="status">Loading the fundraisers.</p>
+      <ul class="cards" id="live-cards"></ul>
+      <p class="empty-note" id="live-empty" hidden>Nothing is live right now. More fundraisers are being planned.</p>
+    </section>
+    <section class="band wrap-wide" id="finished-section" aria-labelledby="finished-heading" hidden>
+      <div class="section-head"><h2 id="finished-heading">Finished</h2></div>
+      <ul class="cards" id="finished-cards"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>
+        <p class="foot-name">Sponsor University of Plymouth</p>
+        <p class="foot-about">University of Plymouth students raising money for Amnesty International. Donations are handled by JustGiving. This site never takes your money.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="foot-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/fundraisers">Fundraisers</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a href="/admin">Leader sign-in</a></li>
+        </ul>
+      </nav>
+      <p class="foot-charity"><span>In support of</span><img src="/amnesty-international.png" alt="Amnesty International" width="520" height="220" loading="lazy"></p>
+    </div>
+  </footer>
+
+  <script src="/fundraisers.js" type="module"></script>
+</body>
+</html>

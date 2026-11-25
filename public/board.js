@@ -1,16 +1,8 @@
-const $ = (id) => document.getElementById(id);
+// A dare board: suggest, vote, donate with a code, and a list per walker.
+import { $, el, leaderHeaders, money, renderProse, route } from './site.js';
 
-const money = (pence) => {
-  const pounds = pence / 100;
-  return `£${Number.isInteger(pounds) ? pounds : pounds.toFixed(2)}`;
-};
-
-function el(tag, className, text) {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
-  return node;
-}
+const slug = location.pathname.split('/').filter(Boolean)[1] ?? '';
+const boardPath = `/api/board?f=${encodeURIComponent(slug)}`;
 
 async function post(path, body) {
   const response = await fetch(path, {
@@ -25,6 +17,8 @@ async function post(path, body) {
 
 let board = null;
 let walkerSlug = null;
+// Set once a draft has been opened with a leader's login, so later refreshes keep working.
+let authHeaders = {};
 const highlightCode = new URLSearchParams(location.search).get('dare');
 
 const groupBoard = () => board.boards.find((b) => b.kind === 'group');
@@ -181,15 +175,17 @@ function renderBoards() {
 }
 
 function renderPage() {
-  const { settings, closed, total_pence: total } = board;
+  const { fundraiser, closed, total_pence: total } = board;
 
-  $('title').textContent = settings.challenge_title;
-  document.title = settings.challenge_title;
+  $('title').textContent = fundraiser.title;
+  $('lede').textContent = fundraiser.summary;
+  document.title = `${fundraiser.title} | Sponsor University of Plymouth`;
+  $('preview-note').hidden = !board.preview;
 
   const meta = [];
-  if (settings.walk_date) meta.push(`The walk: ${settings.walk_date}.`);
-  if (settings.closes_at && !closed) {
-    const when = new Date(settings.closes_at).toLocaleString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit', timeZone: 'Europe/London' });
+  if (fundraiser.event_date) meta.push(`The walk: ${fundraiser.event_date}.`);
+  if (fundraiser.closes_at && !closed) {
+    const when = new Date(fundraiser.closes_at).toLocaleString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit', timeZone: 'Europe/London' });
     meta.push(`The list closes ${when}.`);
   }
   $('cover-meta').textContent = meta.join(' ');
@@ -203,18 +199,17 @@ function renderPage() {
     if (closed) $('cover-now').querySelector('.cover-now-label').textContent = 'The top dare is';
   }
 
-  $('raised').hidden = total === 0;
-  $('raised').replaceChildren();
-  const amount = el('strong', '', money(total));
-  const recipient = settings.charity_name ? ` for ${settings.charity_name}` : '';
-  $('raised').append(amount, ` raised through dares so far${recipient}.`);
+  const hasTarget = fundraiser.target_pence > 0;
+  $('raised').hidden = total === 0 && !hasTarget;
+  $('raised').replaceChildren(el('strong', '', money(total)),
+    hasTarget ? ` of ${money(fundraiser.target_pence)} raised through dares so far for Amnesty International.` : ' raised through dares so far for Amnesty International.');
+  $('progress').hidden = !hasTarget;
+  if (hasTarget && !$('progress').firstChild) $('progress').append(route(fundraiser.percent));
+  else if (hasTarget) $('progress').firstChild.style.setProperty('--done', String(Math.min(fundraiser.percent, 100) / 100));
 
   $('closed-note').hidden = !closed;
-
-  const parts = [];
-  if (settings.group_name) parts.push(`Run by ${settings.group_name}.`);
-  parts.push('Donations are handled by JustGiving.');
-  $('foot-text').textContent = parts.join(' ');
+  $('about-section').hidden = !fundraiser.body;
+  renderProse($('about-section'), fundraiser.body);
 
   const select = $('suggest-target');
   select.replaceChildren(...board.boards.map((b) => {
@@ -310,10 +305,23 @@ for (const dialog of document.querySelectorAll('dialog')) {
   });
 }
 
+// Drafts are only served to signed-in leaders, so a miss is retried once with their login.
+async function fetchBoard() {
+  let response = await fetch(boardPath, { headers: authHeaders });
+  if (response.status === 404 && !authHeaders.authorization && leaderHeaders().authorization) {
+    authHeaders = leaderHeaders();
+    response = await fetch(boardPath, { headers: authHeaders });
+  }
+  if (!response.ok) {
+    const error = new Error('board request failed');
+    error.status = response.status;
+    throw error;
+  }
+  return response.json();
+}
+
 async function load() {
-  const response = await fetch('/api/board');
-  if (!response.ok) throw new Error('board request failed');
-  board = await response.json();
+  board = await fetchBoard();
   renderPage();
 }
 
@@ -328,6 +336,9 @@ load().then(() => {
   renderBoards();
   if (highlightCode) document.getElementById(highlightCode)?.scrollIntoView({ block: 'center' });
   else if (walkerBoards().some((b) => `#${b.slug}` === location.hash)) $('walker-section').scrollIntoView();
-}).catch(() => {
-  $('group-status').textContent = 'The dares could not be loaded. Refresh the page to try again.';
+}).catch((error) => {
+  if (error.status === 404) $('title').textContent = "That fundraiser isn't on the map";
+  $('group-status').textContent = error.status === 404
+    ? 'The link may be old, or the fundraiser may have been taken down.'
+    : 'The dares could not be loaded. Refresh the page to try again.';
 });

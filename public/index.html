@@ -3,137 +3,94 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dare us on Dartmoor</title>
-  <meta name="description" content="Suggest a dare for our Dartmoor walk and donate to push it up the list. The top dares are the ones we do.">
+  <title>Sponsor University of Plymouth</title>
+  <meta name="description" content="University of Plymouth students trekking to Everest Base Camp in summer 2027 for Amnesty International. Dare us, come to an event or sponsor a challenge.">
   <meta name="theme-color" content="#b5125f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sponsor University of Plymouth">
+  <meta property="og:title" content="Sponsor University of Plymouth">
+  <meta property="og:description" content="University of Plymouth students trekking to Everest Base Camp in summer 2027 for Amnesty International. Dare us, come to an event or sponsor a challenge.">
+  <meta property="og:url" content="https://sponsorplymouth.co.uk/">
+  <script src="/legacy.js"></script>
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Overpass:wght@400;600;800&display=swap">
+  <link rel="preload" href="/fonts/big-shoulders-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/overpass.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
+  <link rel="modulepreload" href="/site.js">
 </head>
 <body>
+  <a class="skip" href="#main">Skip to the fundraisers</a>
   <header class="cover">
-    <div class="cover-inner">
-      <h1 id="title">Dare us on Dartmoor</h1>
-      <p class="cover-lede">Suggest something daft for us to do on our walk. Vote for group dares for free, or donate to push a dare up one walker's list. The dares at the top are the ones we do.</p>
-      <p class="cover-meta" id="cover-meta" hidden></p>
-      <div class="cover-now" id="cover-now" hidden>
-        <p class="cover-now-label">If the list closed now, we'd be doing</p>
-        <p class="cover-now-dare" id="cover-now-dare"></p>
+    <div class="topbar">
+      <a class="brand" href="/" aria-label="Sponsor University of Plymouth, home"><img src="/icon.svg" alt="" width="32" height="32"></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list"><svg class="icon" aria-hidden="true"><use href="/icons.svg#menu"></use></svg>Menu</button>
+      <nav aria-label="Main">
+        <ul class="nav-list" id="nav-list">
+          <li><a href="/" aria-current="page">Home</a></li>
+          <li class="nav-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-fundraisers">Fundraisers<svg class="icon" aria-hidden="true"><use href="/icons.svg#caret"></use></svg></button>
+            <ul class="nav-sub-list" id="nav-fundraisers">
+              <li><a href="/fundraisers">All fundraisers</a></li>
+            </ul>
+          </li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a class="nav-leader" href="/admin"><svg class="icon" aria-hidden="true"><use href="/icons.svg#lock"></use></svg>Challenge Leader</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="hero">
+      <h1><span>Sponsor</span> <span>University</span> <span>of Plymouth</span></h1>
+      <div>
+        <p class="hero-intro" id="intro">We're University of Plymouth students trekking to Everest Base Camp in summer 2027 for Amnesty International. Dare us, come to an event or sponsor a challenge.</p>
+        <a class="button button-invert" href="#fundraisers">See fundraisers</a>
       </div>
-      <a class="button button-invert" href="#board">See the dares</a>
     </div>
   </header>
 
-  <main>
-    <div id="board" class="dares-head">
-      <div class="wrap">
-        <h2 id="board-heading">The dares</h2>
-        <p class="raised" id="raised" hidden></p>
-        <p class="closed-note" id="closed-note" hidden>The list has closed. These are the final standings.</p>
-      </div>
+  <a class="everest-strip" href="/our-challenge">
+    <div class="everest-inner">
+      <p class="everest-name"><svg class="icon" aria-hidden="true"><use href="/icons.svg#mountain"></use></svg>Everest Base Camp 2027</p>
+      <div class="everest-figures" id="everest-figures" hidden></div>
+      <p class="everest-charity"><span>in support of</span><img src="/amnesty-international.png" alt="Amnesty International" width="520" height="220"></p>
     </div>
+  </a>
 
-    <section class="wrap dare-section" id="group-section" aria-labelledby="group-heading">
-      <h3 id="group-heading">Group dares</h3>
-      <p class="section-note">Free to vote. The top ones, we all do together.</p>
-      <p class="status" id="group-status" role="status">Loading the dares.</p>
-      <ol class="dares" id="group-dares"></ol>
-      <button class="button" id="group-suggest" type="button" hidden>Suggest a group dare</button>
+  <main id="main">
+    <section class="band wrap-wide" id="featured" aria-label="Featured fundraiser">
+      <p class="load-note" id="featured-status" role="status">Loading the fundraisers.</p>
+      <div id="featured-slot"></div>
     </section>
 
-    <section class="walker-band" id="walker-section" aria-labelledby="walker-heading" hidden>
-      <div class="wrap dare-section">
-        <h3 id="walker-heading">Individual dares</h3>
-        <p class="section-note">Each walker has their own list and does whatever tops it. Your donation goes to that walker's JustGiving page.</p>
-        <div class="tabs" id="tabs" role="group" aria-label="Choose a walker"></div>
-        <p class="status" id="walker-status" role="status" hidden></p>
-        <ol class="dares" id="walker-dares"></ol>
-        <button class="button" id="walker-suggest" type="button"></button>
+    <section class="band wrap-wide" id="fundraisers" aria-labelledby="more-heading">
+      <div class="section-head">
+        <h2 id="more-heading">More fundraisers and challenges</h2>
+        <a class="text-link" href="/fundraisers">View all fundraisers</a>
       </div>
-    </section>
-
-    <section class="wrap how" aria-labelledby="how-heading">
-      <h2 id="how-heading">How it works</h2>
-      <ol class="steps">
-        <li><strong>Suggest a dare</strong> for the whole group or for one walker. We read every suggestion before it goes on the list.</li>
-        <li><strong>Vote for group dares</strong> for free, with one vote per dare.</li>
-        <li><strong>Donate to a walker's dare</strong> on JustGiving, put the dare's code in your donation message, then log it here.</li>
-        <li><strong>We match it up</strong> against JustGiving and the dare climbs that walker's list.</li>
-        <li><strong>The top dares happen</strong> on the walk.</li>
-      </ol>
-      <h3>The small print</h3>
-      <p>You donate on JustGiving, so your money goes to the charity whichever dare wins. This site never touches it.</p>
-      <p>We can turn down any dare that's unsafe, illegal or bad for the moor, even if it's winning. The next one down takes its place.</p>
-      <p>If two dares tie, the one suggested first ranks higher.</p>
+      <ul class="cards" id="cards"></ul>
+      <p class="empty-note" id="cards-empty" hidden>Nothing else is live just yet. More fundraisers are being planned.</p>
     </section>
   </main>
 
   <footer class="foot">
-    <p id="foot-text">Donations are handled by JustGiving.</p>
+    <div class="foot-inner">
+      <div>
+        <p class="foot-name">Sponsor University of Plymouth</p>
+        <p class="foot-about">University of Plymouth students raising money for Amnesty International. Donations are handled by JustGiving. This site never takes your money.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="foot-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/fundraisers">Fundraisers</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/our-challenge">Our Challenge</a></li>
+          <li><a href="/admin">Leader sign-in</a></li>
+        </ul>
+      </nav>
+      <p class="foot-charity"><span>In support of</span><img src="/amnesty-international.png" alt="Amnesty International" width="520" height="220" loading="lazy"></p>
+    </div>
   </footer>
 
-  <dialog class="sheet" id="donate-dialog" aria-labelledby="donate-title">
-    <button class="sheet-close" type="button" data-close aria-label="Close">&times;</button>
-    <h2 id="donate-title">Back this dare</h2>
-    <p class="sheet-dare" id="donate-dare"></p>
-    <div id="donate-flow">
-      <ol class="donate-steps">
-        <li>
-          <p>Copy this code. It tells us which dare your money is for.</p>
-          <div class="code-row">
-            <code id="donate-code"></code>
-            <button class="button button-quiet" id="copy-code" type="button">Copy code</button>
-          </div>
-        </li>
-        <li>
-          <p>Donate on JustGiving and paste the code into your message.</p>
-          <a class="button" id="donate-link" target="_blank" rel="noopener">Open JustGiving</a>
-        </li>
-        <li>
-          <p>Come back and log it so we know to look for it.</p>
-          <form id="pledge-form" novalidate>
-            <label for="pledge-amount">Amount you gave, in pounds</label>
-            <input id="pledge-amount" name="amount" inputmode="decimal" autocomplete="off" required placeholder="10">
-            <label for="pledge-name">Name on your donation (optional)</label>
-            <input id="pledge-name" name="donor_name" maxlength="60" autocomplete="name">
-            <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <p class="form-error" id="pledge-error" role="alert" hidden></p>
-            <button class="button" type="submit">Log my donation</button>
-          </form>
-        </li>
-      </ol>
-    </div>
-    <div id="donate-done" hidden>
-      <p class="done">Donation logged, thank you. The dare moves up once we've matched it on JustGiving.</p>
-      <button class="button button-quiet" type="button" data-close>Back to the dares</button>
-    </div>
-  </dialog>
-
-  <dialog class="sheet" id="suggest-dialog" aria-labelledby="suggest-title">
-    <button class="sheet-close" type="button" data-close aria-label="Close">&times;</button>
-    <h2 id="suggest-title">Suggest a dare</h2>
-    <form id="suggest-form" novalidate>
-      <label for="suggest-target">Who's it for?</label>
-      <select id="suggest-target" name="target_id" required></select>
-      <label for="suggest-title-input">The dare</label>
-      <input id="suggest-title-input" name="title" maxlength="80" required placeholder="Walk the last mile in a dress">
-      <label for="suggest-detail">Any details (optional)</label>
-      <textarea id="suggest-detail" name="detail" maxlength="240" rows="3"></textarea>
-      <label for="suggest-name">Your name (optional, shown on the list)</label>
-      <input id="suggest-name" name="suggested_by" maxlength="40" autocomplete="name">
-      <input class="trap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <p class="hint">We read every suggestion first. Keep it safe, legal and kind to the moor.</p>
-      <p class="form-error" id="suggest-error" role="alert" hidden></p>
-      <button class="button" type="submit">Send suggestion</button>
-    </form>
-    <div id="suggest-done" hidden>
-      <p class="done">Suggestion sent. It'll appear on the list once we've read it.</p>
-      <button class="button button-quiet" type="button" data-close>Back to the dares</button>
-    </div>
-  </dialog>
-
-  <script src="/app.js" type="module"></script>
+  <script src="/home.js" type="module"></script>
 </body>
 </html>
