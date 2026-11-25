@@ -93,8 +93,10 @@ export function route(percent) {
 }
 
 // "£110 of £300" with the percent and the route, or just the amount when no target is set.
+// With no target and nothing raised yet there is nothing worth showing, so it returns nothing.
 export function tally(totalPence, targetPence, percent) {
   const nodes = [];
+  if (!(targetPence > 0) && !(totalPence > 0)) return nodes;
   const row = el('div', 'tally');
   const amount = el('p', 'tally-money');
   amount.append(el('strong', '', money(totalPence)), targetPence > 0 ? `of ${money(targetPence)}` : 'raised so far');

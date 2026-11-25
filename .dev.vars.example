@@ -1,1 +1,3 @@
 ADMIN_PASSWORD=choose-a-local-password
+# Optional. Without it the Everest total is left out.
+JUSTGIVING_APP_ID=
