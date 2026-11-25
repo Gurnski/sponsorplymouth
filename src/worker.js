@@ -266,7 +266,7 @@ async function getSite(env, ctx, pageKey) {
 
 // Drafts exist only for signed-in leaders. To everyone else they are not found.
 async function findVisibleFundraiser(request, env, slug) {
-  const fundraiser = slug ? await findFundraiser(env, 'slug', slug) : await findFundraiser(env, 'id', 1);
+  const fundraiser = slug ? await findFundraiser(env, 'slug', slug) : null;
   if (!fundraiser) throw new HttpError(404, 'That fundraiser could not be found.');
   if (fundraiser.status === 'draft' && !(await optionalAdmin(request, env))) {
     throw new HttpError(404, 'That fundraiser could not be found.');
@@ -283,8 +283,9 @@ async function getFundraiser(request, env, slug) {
   };
 }
 
+// With no slug this is the first dare board, which is what /api/board meant before there were several.
 async function getBoard(request, env, slug) {
-  const fundraiser = await findVisibleFundraiser(request, env, slug);
+  const fundraiser = await findVisibleFundraiser(request, env, slug ?? (await findFundraiser(env, 'id', 1))?.slug);
   if (fundraiser.type !== 'dare') throw new HttpError(404, 'That fundraiser has no dare board.');
   const [{ results: targets }, { results: dares }] = await Promise.all([
     env.DB.prepare('SELECT id, slug, name, kind, jg_url FROM targets WHERE fundraiser_id = ? AND active = 1 ORDER BY sort, id').bind(fundraiser.id).all(),
@@ -331,13 +332,14 @@ const LIST_CLOSED = 'The dare list has closed.';
 // A dare that is on a list, with the fundraiser settings that decide what can be done to it.
 const findListedDare = (env, code) =>
   env.DB.prepare(`
-    SELECT d.id, t.kind, f.type, f.status, f.closes_at, f.group_enabled
+    SELECT d.id, t.kind, t.active, f.type, f.status, f.closes_at, f.group_enabled
     FROM dares d JOIN targets t ON t.id = d.target_id JOIN fundraisers f ON f.id = t.fundraiser_id
     WHERE d.code = ? AND d.status = 'approved'`).bind(code).first();
 
 async function findPublicDare(env, code) {
   const dare = await findListedDare(env, code);
-  if (!dare || dare.status === 'draft') throw new HttpError(404, 'That dare is no longer on the list.');
+  // Drafts and hidden walkers are not on the public site, so neither are their dares.
+  if (!dare || dare.status === 'draft' || !dare.active) throw new HttpError(404, 'That dare is no longer on the list.');
   return dare;
 }
 
@@ -390,8 +392,8 @@ async function createPledge(request, env) {
 async function toggleVote(request, env) {
   const body = await readBody(request);
   if (!isVoterId(body.voter)) throw new HttpError(400, 'Your vote could not be read. Refresh the page and try again.');
-  const dare = await findListedDare(env, String(body.code ?? ''));
-  if (!dare || dare.status === 'draft' || dare.kind !== 'group') throw new HttpError(404, 'That dare is no longer on the list.');
+  const dare = await findPublicDare(env, String(body.code ?? ''));
+  if (dare.kind !== 'group') throw new HttpError(404, 'That dare is no longer on the list.');
   if (!isTakingDares(dare)) throw new HttpError(403, LIST_CLOSED);
   if (!dare.group_enabled) throw new HttpError(400, 'Group dares are switched off.');
   // Generous because campus Wi-Fi and halls can put many people behind one address.
