@@ -513,25 +513,26 @@ async function adminCreateFundraiser(request, env) {
   ]);
   fields.slug = uniqueSlug(slugify(fields.title, 'fundraiser'), new Set(fundraiserSlugs.results.map((row) => row.slug)));
   const columns = Object.keys(fields);
-  const created = await env.DB.prepare(
+  const statements = [env.DB.prepare(
     `INSERT INTO fundraisers (${columns.join(', ')}, sort) VALUES (${columns.map(() => '?').join(', ')}, (SELECT COALESCE(MAX(sort), 0) + 1 FROM fundraisers))`,
-  ).bind(...columns.map((column) => fields[column])).run();
-  const id = created.meta.last_row_id;
+  ).bind(...columns.map((column) => fields[column]))];
 
   if (fields.type === 'dare') {
     // Every dare board gets its own group list. Target slugs are unique across the whole site.
     const taken = new Set(targetRows.results.map((row) => row.slug));
-    const insert = env.DB.prepare('INSERT INTO targets (slug, name, kind, jg_url, active, sort, fundraiser_id) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    const statements = [insert.bind(uniqueSlug(`${fields.slug}-group`, taken), 'The whole group', 'group', '', 1, 0, id)];
+    const insert = env.DB.prepare('INSERT INTO targets (slug, name, kind, jg_url, active, sort, fundraiser_id) VALUES (?, ?, ?, ?, ?, ?, (SELECT id FROM fundraisers WHERE slug = ?))');
+    statements.push(insert.bind(uniqueSlug(`${fields.slug}-group`, taken), 'The whole group', 'group', '', 1, 0, fields.slug));
     const copyFrom = Number(body.copy_walkers_from) || 0;
     if (copyFrom) {
       const { results: walkers } = await env.DB.prepare("SELECT name, jg_url, active FROM targets WHERE fundraiser_id = ? AND kind = 'walker' ORDER BY sort, id").bind(copyFrom).all();
       walkers.forEach((walker, index) => {
-        statements.push(insert.bind(uniqueSlug(slugify(walker.name), taken), walker.name, 'walker', walker.jg_url, walker.active, index + 1, id));
+        statements.push(insert.bind(uniqueSlug(slugify(walker.name), taken), walker.name, 'walker', walker.jg_url, walker.active, index + 1, fields.slug));
       });
     }
-    await env.DB.batch(statements);
   }
+  // One batch, so a dare board can never be left without its group list.
+  await env.DB.batch(statements);
+  const { id } = await findFundraiser(env, 'slug', fields.slug);
   return json({ ok: true, id, slug: fields.slug }, 201);
 }
 
@@ -607,6 +608,14 @@ async function adminAddEverestPage(request, env) {
   await env.DB.prepare('INSERT INTO everest_pages (short_name, owner, raised_pence, target_pence, fetched_at) VALUES (?, ?, ?, ?, ?)')
     .bind(shortName, page.owner, page.raised_pence, page.target_pence, page.raised_pence === null ? null : Date.now()).run();
   return json({ ok: true }, 201);
+}
+
+function safeDecode(text) {
+  try {
+    return decodeURIComponent(text);
+  } catch {
+    return text;
+  }
 }
 
 async function adminRemoveEverestPage(env, shortName) {
@@ -711,8 +720,9 @@ async function routeAdmin(request, env, path, method) {
   if (is('POST', 'everest/pages')) return adminAddEverestPage(request, env);
   if (is('POST', 'everest/refresh')) return adminRefreshEverest(env);
 
-  const everestPage = /^\/api\/admin\/everest\/pages\/([A-Za-z0-9_-]{1,100})$/.exec(path);
-  if (everestPage && method === 'DELETE') return adminRemoveEverestPage(env, everestPage[1]);
+  // Any name can be removed, including an odd one that could never have been read.
+  const everestPage = /^\/api\/admin\/everest\/pages\/([^/]{1,300})$/.exec(path);
+  if (everestPage && method === 'DELETE') return adminRemoveEverestPage(env, safeDecode(everestPage[1]));
 
   if (path === '/api/admin/logins' || path.startsWith('/api/admin/logins/')) {
     requireOwner(admin);
@@ -761,7 +771,7 @@ async function servePage(request, env, url) {
     const headers = new Headers(response.headers);
     headers.delete('etag');
     headers.set('cache-control', 'no-cache');
-    return new Response(response.body, { status, headers });
+    return new Response(response.body, { status: response.ok ? status : response.status, headers });
   });
   if (request.method !== 'GET' && request.method !== 'HEAD') return new Response('Method not allowed', { status: 405 });
 

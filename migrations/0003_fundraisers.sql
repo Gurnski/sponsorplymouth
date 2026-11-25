@@ -83,8 +83,7 @@ INSERT OR IGNORE INTO everest_pages (short_name)
 SELECT replace(jg_url, 'https://www.justgiving.com/fundraising/', '') FROM targets
 WHERE kind = 'walker' AND active = 1
   AND jg_url LIKE 'https://www.justgiving.com/fundraising/_%'
-  AND instr(replace(jg_url, 'https://www.justgiving.com/fundraising/', ''), '/') = 0
-  AND instr(jg_url, '?') = 0
+  AND replace(jg_url, 'https://www.justgiving.com/fundraising/', '') NOT GLOB '*[^A-Za-z0-9_-]*'
 ORDER BY sort, id;
 
 INSERT INTO settings (key, value) VALUES

@@ -64,7 +64,7 @@ Ten wrong passwords or keys from one connection locks sign-in from that connecti
 
 ## Try it on your computer
 
-You need Node 22 or newer.
+You need Node 22.13 or newer. The API tests use the SQLite that comes with Node.
 
 ```
 npm install
